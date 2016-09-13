@@ -271,7 +271,11 @@ var RNFS = {
       throw new Error('Invalid encoding type "' + options.encoding + '"');
     }
 
-    return RNFSManager.appendFile(normalizeFilePath(filepath), b64);
+    if (options.offset === undefined) {
+      options.offset = -1;
+    }
+
+    return RNFSManager.appendFile(normalizeFilePath(filepath), b64, options.offset);
   },
 
   downloadFile(options: DownloadFileOptions): { jobId: number, promise: Promise<DownloadResult> } {

@@ -108,6 +108,7 @@ RCT_EXPORT_METHOD(writeFile:(NSString *)filepath
 
 RCT_EXPORT_METHOD(appendFile:(NSString *)filepath
                   contents:(NSString *)base64Content
+                  offset:(NSInteger)offset
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -129,7 +130,11 @@ RCT_EXPORT_METHOD(appendFile:(NSString *)filepath
   @try {
     NSFileHandle *fH = [NSFileHandle fileHandleForUpdatingAtPath:filepath];
 
-    [fH seekToEndOfFile];
+    if (offset >= 0) {
+      [fH seekToFileOffset:offset];
+    } else {
+      [fH seekToEndOfFile];
+    }
     [fH writeData:data];
 
     return resolve(nil);

@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.RandomAccessFile;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
@@ -70,13 +71,20 @@ public class RNFSManager extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void appendFile(String filepath, String base64Content, Promise promise) {
+  public void appendFile(String filepath, String base64Content, int offset, Promise promise) {
     try {
       byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
 
-      FileOutputStream outputStream = new FileOutputStream(filepath, true);
-      outputStream.write(bytes);
-      outputStream.close();
+      if (offset < 0) {
+        FileOutputStream outputStream = new FileOutputStream(filepath, true);
+        outputStream.write(bytes);
+        outputStream.close();
+      } else {
+        RandomAccessFile file = new RandomAccessFile(filepath, "w");
+        file.seek(offset);
+        file.write(bytes);
+        file.close();
+      }
 
       promise.resolve(null);
     } catch (Exception ex) {

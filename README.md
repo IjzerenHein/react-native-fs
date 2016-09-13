@@ -319,9 +319,9 @@ Note: you will take quite a performance hit if you are reading big files
 
 Write the `contents` to `filepath`. `encoding` can be one of `utf8` (default), `ascii`, `base64`. `options` optionally takes an object specifying the file's properties, like mode etc.
 
-### `appendFile(filepath: string, contents: string, encoding?: string): Promise<void>`
+### `appendFile(filepath: string, contents: string, encoding?: string|config?: object): Promise<void>`
 
-Append the `contents` to `filepath`. `encoding` can be one of `utf8` (default), `ascii`, `base64`.
+Append the `contents` to `filepath`. The third argument is either the `encoding` or a `config` object. `encoding` can be one of `utf8` (default), `ascii`, `base64`. The `config` object can have the properties `encoding` and `offset`. `offset` is the offset within the file onto which the data is appended/updated.
 
 ### `moveFile(filepath: string, destPath: string): Promise<void>`
 
