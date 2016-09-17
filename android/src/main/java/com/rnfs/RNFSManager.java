@@ -80,7 +80,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
         outputStream.write(bytes);
         outputStream.close();
       } else {
-        RandomAccessFile file = new RandomAccessFile(filepath, "w");
+        RandomAccessFile file = new RandomAccessFile(filepath, "rw");
         file.seek(offset);
         file.write(bytes);
         file.close();
